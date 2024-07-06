@@ -1,17 +1,18 @@
 const todoList = [
     {
-        id: 1,
-        title: 'Read Material'
+      title: 'Read Assignment',
+      id: 1,
     },
     {
-        id: 2,
-        title: 'Do assignment'
+      title: 'Complete Assignment',
+      id: 2,
     },
     {
+        title: 'Study Material',
         id: 3,
-        title: 'Study Material'
-    },
-];
+      },
+  ];
+  
 
 const TodoList = () => {
         <ul>{todoList.map((item) => (
