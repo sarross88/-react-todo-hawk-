@@ -1,3 +1,4 @@
+import React from 'react'
 //newTodo with update function named setNewTodo
 //aka Search in hacker stories 
 const AddTodoForm = (props) => {
@@ -6,17 +7,22 @@ const AddTodoForm = (props) => {
     //nothing happens initially until setNewTodo function is fired 
     //React.useState(''), inside ('') can be the initial value, ex video is hello 
     //inside of handleAddTodo we need to deal with the state 
-    const [newTodo, setNewTodo] = React.useState('');
 
     //This is just a fucntion, the new things get saved after called, not intially
     //like handleChange in hacker stories
     const handleAddTodo = (event) => {
         //this is not a browser event, these are React object options
         // console.log(event)
-        const todoTitle = event.target.value;
+        event.preventDefault()
+        const todoTitle = event.target.title.value;
         console.log(todoTitle);
-        setNewTodo(event.target.value);
-        props.onAdd(event);
+        props.onAddTodo(todoTitle)
+        event.target.title.value = ""
+
+        // setNewTodo(event.target.value);
+        // props.onAdd(event);
+
+
         // console.log(event.target.value)
         //QUESTION prevent default behavior ??????
         //QUESTION todoTitle??? 
@@ -27,15 +33,15 @@ const AddTodoForm = (props) => {
     // }
     return(
         <div>
-        <form>
+        <form  onSubmit={handleAddTodo}>
         <label htmlFor="todoTitle">Title</label>
-        <input id="todoTitle" type="text" onSubmit={handleAddTodo} />
+        <input name="title" id="todoTitle" type="text" />
         <button type='submit'>Add</button>
         </form>
-        {/* this is where state is changed, stateful info */}
-        <p>
+
+        {/* <p>
             Todo item: <strong>{newTodo}</strong>.
-        </p>
+        </p> */}
         </div>
         )
 
