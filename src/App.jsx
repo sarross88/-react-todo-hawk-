@@ -23,3 +23,6 @@ export default App;
 
 //onAdd can be anything, jsut use the word 'on'
 //CTD want onSubmit 
+
+
+//// <AddTodoForm onAddTodo={handleAddTodo}/> 
