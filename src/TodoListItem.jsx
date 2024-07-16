@@ -1,7 +1,9 @@
-const TodoListItem = () => {
+//called Item on hacker stories 
+const TodoListItem = (props) => {
 return(
-    <li key={item.id}>{item.title}</li>
+    <li>{props.todo.title}</li>
 )
 }
 
 export default TodoListItem;
+

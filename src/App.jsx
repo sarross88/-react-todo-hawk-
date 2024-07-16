@@ -1,31 +1,25 @@
+import React, { useState } from 'react';
 import './App.css';
 import TodoList from './TodoList.jsx';
 import AddTodoForm from './AddTodoForm.jsx';
 
 
 function App() {
-  const todoList = [
-    {
-      title: 'Read Assignment',
-      id: 1,
-    },
-    {
-      title: 'Complete Assignment',
-      id: 2,
-    },
-    {
-        title: 'Study Material',
-        id: 3,
-      },
-  ];
-  
+
+const [newTodo, setNewTodo] = useState('')
+
   return (
     <div>
      <h1>Todo List</h1>
-   <AddTodoForm/>
-   <TodoList list={todoList} title= 'Current Todos'/>
+     {/* //onAddTodo, setNewTodo */}
+   <AddTodoForm onAddTodo={handleAddTodo}/>
+   <p>{newTodo}</p>
+   <TodoList/>
    </div>
   )
 }
 
 export default App;
+
+//onAdd can be anything, jsut use the word 'on'
+//CTD want onSubmit 
