@@ -1,28 +1,48 @@
-import React, { useState } from 'react';
-import './App.css';
-import TodoList from './TodoList.jsx';
-import AddTodoForm from './AddTodoForm.jsx';
-
+import {useState} from "react"
+import "./App.css"
+import { AddTodoForm } from "./AddTodoForm"
+import {TodoList} from "./TodoList"
 
 function App() {
+  //HOOK useState - cont redefine newItem, need to call the function but NOT inside the function 
+//todos=todoList setTodos= setTodoList
+  const [todoList, setTodoList] = useState([])
 
-const [newTodo, setNewTodo] = useState('')
+  function addTodo(title){
+      setTodoList((currentTodos)=>{
+          return([...currentTodos, 
+            {id: crypto.randomUUID(), title, completed: false}, ])
+        })
+  }
 
-  return (
-    <div>
-     <h1>Todo List</h1>
-     {/* //onAddTodo, setNewTodo */}
-   <AddTodoForm onAddTodo={handleAddTodo}/>
-   <p>{newTodo}</p>
-   <TodoList/>
-   </div>
-  )
+  function toggleTodo(id, completed){
+    setTodoList(currentTodos =>{
+      return currentTodos.map(todo=>{
+        if(todo.id === id){
+          return {...todo, completed}
+        }
+        return todo
+      })
+    })
+  }
+  function deleteTodo(id){
+    setTodoList(currentTodos =>{
+      return currentTodos.filter((todo)=> { return(todo.id !== id)})
+    })
+  }
+
+return(
+  <>
+<AddTodoForm 
+onAddTodo={addTodo}>
+</AddTodoForm>
+<h2 className="header">Todo List :</h2>
+<TodoList 
+todoList={todoList} 
+toggleTodo={toggleTodo} 
+deleteTodo={deleteTodo}>
+</TodoList>
+  </>
+)
 }
-
-export default App;
-
-//onAdd can be anything, jsut use the word 'on'
-//CTD want onSubmit 
-
-
-//// <AddTodoForm onAddTodo={handleAddTodo}/> 
+export default App

@@ -1,28 +1,21 @@
-import TodoListItem from './TodoListItem.jsx';
+import {TodoListItem} from './TodoListItem'
 
-//called stores in hacker stuff
-const todoList = [
-    {title: 'Read Assignment', id: 1},
-    {title: 'Complete Assignment', id: 2},
-    {title: 'Study Material', id: 3,},
-  ]
-  
-
-//List in hacker stories - props conventionally named, props is an object with list as a property
-const TodoList = (props) => {
-    const onAddTodo = props.onAddTodo
-   const handleSubmit = (event) =>{
-    event.preventDefault()
-    onAddTodo([...todoList, {id:4, title:"newest"}])
-   }
+export function TodoList({todoList, toggleTodo, deleteTodo}){
     return(
-       <ul>
-        {todoList.map((todo) => { <TodoListItem key={todo.id} todo={todo}/>})}
-      </ul>
+        <ul className="list">
+  {todoList.length === 0 && "No todo's yet"}
+  {todoList.map((todo) => {
+    return (
+     <TodoListItem 
+     id={todo.id} 
+     completed={todo.completed} 
+     title={todo.title} 
+     key={todo.id} 
+     toggleTodo={toggleTodo} 
+     deleteTodo={deleteTodo}>
+     </TodoListItem>)
+  })}
+  
+</ul>
     )
 }
-
-export default TodoList;
-
-//LIST in hacker stories 
-//add props - pass down likes html attributes or function attributes, pass values into react components 
