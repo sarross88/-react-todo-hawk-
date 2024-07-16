@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
-const App = () => {
+
+const App2 = () => {
   const todoList = [
     {
       title: 'Read for Assignment',
@@ -16,14 +17,14 @@ const App = () => {
       },
   ];
 
-  const handleAddTodo = (event) => {
+  const handleOnAddTodo = (event) => {
     console.log(event.target.value);
   };
 
   return (
     <div>
       <h1>Todo List</h1>
-      <AddTodoForm onAddTodo={handleAddTodo} />
+      <AddTodoForm onAddTodo={handleOnAddTodo} />
       <hr />
       <p>{newTodo}</p>
       <TodoList list={todoList} />
@@ -34,14 +35,16 @@ const App = () => {
 const AddTodoForm = (props) => {
   const [newTodo, setNewTodo] = React.useState('');
 
-  const handleSubmit = (event) => {
+  const handleAddTodo = (event) => {
+    event.preventDefault()
+    const todoTitle = event.target.title.value;
     setNewTodo(event.target.value);
-    props.onAddTodo(event);
+    props.onAddTodo(todoTitle);
   };
 
   return (
     <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleAddTodo}>
       <label htmlFor="todoTitle">Title: </label>
       <input name='title' id="todoTitle" type="text" />
       <button type='submit'>Add</button>
