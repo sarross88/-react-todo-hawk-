@@ -3,19 +3,40 @@ import "./App.css"
 import { AddTodoForm } from "./AddTodoForm"
 import {TodoList} from "./TodoList"
 
-function App() {
-  //HOOK useState - cont redefine newItem, need to call the function but NOT inside the function 
-//todos=todoList setTodos= setTodoList
-  const [todoList, setTodoList] = useState(() => {
-    const localValue = localStorage.getItem("ITEMS")
+
+const useSemiPersistentState = (key) => {
+  const [value, setValue] = useState(() => {
+    const localValue = localStorage.getItem(key)
     if (localValue == null) return []
 
     return JSON.parse(localValue)
   })
 
   useEffect(() => {
-    localStorage.setItem("ITEMS", JSON.stringify(todoList))
-  }, [todoList])
+    localStorage.setItem(key, JSON.stringify(value))
+  }, [value, key]);
+
+  return [value, setValue]
+}
+
+
+
+function App() {
+  //HOOK useState - cont redefine newItem, need to call the function but NOT inside the function 
+//todos=todoList setTodos= setTodoList
+  // const [todoList, setTodoList] = useState(() => {
+  //   const localValue = localStorage.getItem("ITEMS")
+  //   if (localValue == null) return []
+
+  //   return JSON.parse(localValue)
+  // })
+
+  // useEffect(() => {
+  //   localStorage.setItem("ITEMS", JSON.stringify(todoList))
+  // }, [todoList])
+
+
+  const [todoList, setTodoList] = useSemiPersistentState();
 
   function addTodo(title) {
     setTodoList(currentTodos => {
@@ -37,6 +58,7 @@ function App() {
       })
     })
   }
+
   function deleteTodo(id){
     setTodoList(currentTodos =>{
       return currentTodos.filter((todo)=> { return(todo.id !== id)})
