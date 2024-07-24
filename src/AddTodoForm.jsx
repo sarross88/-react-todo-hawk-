@@ -19,7 +19,7 @@ export function AddTodoForm({onAddTodo}){
         setNewTodo('')
       }
     return(
-        <form onSubmit={handleAddTodo} className="new-item-form">
+        <form onAddTodo={handleAddTodo} className="new-item-form">
 <div className="form-row">
 <h1 className="header">Todo List App Generator</h1>
   <label htmlFor="item">New Item</label>
@@ -34,3 +34,6 @@ export function AddTodoForm({onAddTodo}){
 </form>
     )
 }
+
+
+// onAddTodo   his onSubmit={addTodo}

@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react"
 import "./App.css"
 import { AddTodoForm } from "./AddTodoForm"
 import {TodoList} from "./TodoList"
@@ -6,22 +6,26 @@ import {TodoList} from "./TodoList"
 function App() {
   //HOOK useState - cont redefine newItem, need to call the function but NOT inside the function 
 //todos=todoList setTodos= setTodoList
-  const [todoList, setTodoList] = useState(()=>{
-    const localValue = localStorage.getItems("ITEMS")
-    if(localValue == null) return []
+  const [todoList, setTodoList] = useState(() => {
+    const localValue = localStorage.getItem("ITEMS")
+    if (localValue == null) return []
+
     return JSON.parse(localValue)
   })
 
-  useEffect(()=>{
+  useEffect(() => {
     localStorage.setItem("ITEMS", JSON.stringify(todoList))
   }, [todoList])
 
-  function addTodo(title){
-      setTodoList((currentTodos)=>{
-          return([...currentTodos, 
-            {id: crypto.randomUUID(), title, completed: false}, ])
-        })
+  function addTodo(title) {
+    setTodoList(currentTodos => {
+      return [
+        ...currentTodos,
+        { id: crypto.randomUUID(), title, completed: false },
+      ]
+    })
   }
+
 
   function toggleTodo(id, completed){
     setTodoList(currentTodos =>{
