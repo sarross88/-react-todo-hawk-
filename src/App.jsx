@@ -4,6 +4,7 @@ import { AddTodoForm } from "./AddTodoForm"
 import {TodoList} from "./TodoList"
 
 
+
 const useSemiPersistentState = (key) => {
   const [value, setValue] = useState(() => {
     const localValue = localStorage.getItem(key)
@@ -22,19 +23,6 @@ const useSemiPersistentState = (key) => {
 
 
 function App() {
-  //HOOK useState - cont redefine newItem, need to call the function but NOT inside the function 
-//todos=todoList setTodos= setTodoList
-  // const [todoList, setTodoList] = useState(() => {
-  //   const localValue = localStorage.getItem("ITEMS")
-  //   if (localValue == null) return []
-
-  //   return JSON.parse(localValue)
-  // })
-
-  // useEffect(() => {
-  //   localStorage.setItem("ITEMS", JSON.stringify(todoList))
-  // }, [todoList])
-
 
   const [todoList, setTodoList] = useSemiPersistentState();
 
