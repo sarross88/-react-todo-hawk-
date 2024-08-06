@@ -1,39 +1,31 @@
-import { useState } from 'react'
+import { useState } from "react";
+import { InputWithLabel } from "./InputWithLabel.jsx";
 
-export function AddTodoForm({onAddTodo}){
-    const [newTodo, setNewTodo] = useState('')
+export default function AddTodoForm({ onAddTodo }) {
+  const [todoTitle, setNewTodo] = useState("");
 
-    function handleTitleChange(e){
-        return setNewTodo(e.target.value)
-    }
+  function handleTitleChange(event) {
+    const newTodoTitle = event.target.value;
+    setNewTodo(newTodoTitle);
+  }
+  function handleAddTodo(event) {
+    event.preventDefault();
+    const newTodo = {
+      title: todoTitle,
+      id: Date.now(),
+    };
 
-    function handleAddTodo(e){
-        //stops from refreshing 
-        e.preventDefault()
-        // setTodos((currentTodos)=>{
-        //   return([...currentTodos, 
-        //     {id: crypto.randomUUID(), title: newTodo, completed: false}, ])
-        // })
-        if(newTodo === ""){return }
-        onAddTodo(newTodo)
-        setNewTodo('')
-      }
-    return(
-        <form onSubmit={handleAddTodo} className="new-item-form">
-<div className="form-row">
-<h1 className="header">Todo List App Generator</h1>
-  <label htmlFor="item">New Item</label>
-  <input 
-  value={newTodo} 
-  onChange={handleTitleChange} 
-  type="text" 
-  id="item">
-  </input>
-</div>
-<button className="btn">Add</button>
-</form>
-    )
+    onAddTodo(newTodo);
+    setNewTodo("");
+  }
+
+  return (
+    <form onSubmit={handleAddTodo}>
+      <InputWithLabel todoTitle={todoTitle} handleTitleChange={handleTitleChange}>
+        ADD NEW TODO :
+      </InputWithLabel>
+
+      <button type="submit">Add</button>
+    </form>
+  );
 }
-
-
-// onAddTodo   his onSubmit={addTodo}
