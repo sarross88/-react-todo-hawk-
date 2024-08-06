@@ -1,36 +1,36 @@
 import { useState } from 'react'
 import {InputWithLabel} from './InputWithLabel'
 
-export function AddTodoForm({onAddTodo}){
+export default function AddTodoForm({ onAddTodo }) {
     const [newTodo, setNewTodo] = useState('')
 
     function handleTitleChange(e){
-        return setNewTodo(e.target.value)
+        const newTodoTitle = e.target.value;
+        return setNewTodo(newTodoTitle)
     }
 
     function handleAddTodo(e){
         //stops from refreshing 
         e.preventDefault()
-        if(newTodo === ""){return }
-        onAddTodo(newTodo)
-        setNewTodo('')
+        if(newTodo === ""){return}
+        const newTodoItem ={
+          title: newTodo,
+          id: Date.now(),
+        };
+        onAddTodo(newTodoItem);
+        setNewTodo("");
       }
+
     return(
         <form onSubmit={handleAddTodo} className="new-item-form">
 <div className="form-row">
 <h1 className="header">Todo List App Generator</h1>
-<InputWithLabel newTodo={newTodo} handleTitleChange={handleTitleChange}> Title </InputWithLabel>
-  {/* <label htmlFor="item">New Item</label>
-  <input 
-  value={newTodo} 
-  onChange={handleTitleChange} 
-  type="text" 
-  id="item">
-  </input> */}
+<InputWithLabel newTodo={newTodo} handleTitleChange={handleTitleChange}> Title: 
+</InputWithLabel>
 </div>
 <button className="btn">Add</button>
 </form>
-    )
+    );
 }
 
 
