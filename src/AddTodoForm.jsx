@@ -34,3 +34,6 @@ export function AddTodoForm({onAddTodo}){
 </form>
     )
 }
+
+
+// onAddTodo   his onSubmit={addTodo}
