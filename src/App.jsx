@@ -1,70 +1,62 @@
-import { useEffect, useState } from "react"
-import "./App.css"
-import  AddTodoForm from "./AddTodoForm"
-import TodoList from "./TodoList"
-
-
-
-const useSemiPersistentState = (key) => {
-  const [value, setValue] = useState(() => {
-    const localValue = localStorage.getItem(key)
-    if (localValue == null) return []
-
-    return JSON.parse(localValue)
-  })
-
-  useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value))
-  }, [value, key]);
-
-  return [value, setValue]
-}
+import { useEffect, useState } from "react";
+import TodoList from "./TodoList.jsx";
+import  AddTodoForm from "./AddTodoForm.jsx";
 
 
 
 function App() {
 
-  const [todoList, setTodoList] = useSemiPersistentState();
+  const [todoList, setTodoList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
 
-  function addTodo(title) {
-    setTodoList(currentTodos => {
-      return [
-        ...currentTodos,
-        { id: crypto.randomUUID(), title, completed: false },
-      ]
-    })
+  useEffect(()=>{
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const existingTodos = JSON.parse(localStorage.getItem("savedTodoList")) ?? [];
+        const objectTodo = {
+          data: { 
+            todoList : existingTodos,
+          },
+        };
+        resolve(objectTodo)
+      }, 2000);
+    }).then((result)=>{
+      const retrievedTodoList = result.data.todoList;
+      setTodoList(retrievedTodoList);
+      setIsLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const todoListString = JSON.stringify(todoList);
+      localStorage.setItem("savedTodoList", todoListString);
+    }
+  }, [todoList, isLoading]);
+
+
+
+  function addTodo(newTodo) {
+    setTodoList((previousTodoList) => [...previousTodoList, newTodo]);
   }
 
-
-  function toggleTodo(id, completed){
-    setTodoList(currentTodos =>{
-      return currentTodos.map(todo=>{
-        if(todo.id === id){
-          return {...todo, completed}
-        }
-        return todo
-      })
-    })
+  function removeTodo(id) {
+    const filteredTodoList = todoList.filter((todo) => todo.id !== id);
+    setTodoList(filteredTodoList);
   }
 
-  function deleteTodo(id){
-    setTodoList(currentTodos =>{
-      return currentTodos.filter((todo)=> { return(todo.id !== id)})
-    })
-  }
-
-return(
-  <>
-<AddTodoForm 
-onAddTodo={addTodo}>
-</AddTodoForm>
-<h2 className="header">Todo List :</h2>
-<TodoList 
-todoList={todoList} 
-toggleTodo={toggleTodo} 
-deleteTodo={deleteTodo}>
-</TodoList>
-  </>
-)
+  return (
+    <>
+      <div id='main'>
+      <section id='app-content'>
+      <h1>TODO APP</h1>
+      <AddTodoForm onAddTodo={addTodo} />
+      {isLoading ? (<p>Loading....</p>) 
+      : (<TodoList onRemoveTodo={removeTodo} todoList={todoList} />)}
+      </section>
+      </div>
+    </>
+  );
 }
-export default App
+
+export default App;

@@ -1,20 +1,20 @@
-import {TodoListItem} from './TodoListItem'
+// This is a component
+import TodoListItem from "./TodoListItem"
 
-export function TodoList({todoList, toggleTodo, deleteTodo}) {
+export default function TodoList({ todoList, onRemoveTodo }) {
   return (
     <ul>
         {todoList.length === 0 && "No todo's yet"}
       {todoList.map((todo) => (
         <TodoListItem
-          completed={todo.completed} 
           key={todo.id}
           title={todo.title}
-          toggleTodo={toggleTodo} 
-          deleteTodo={deleteTodo}
-          id={todo.id} 
+          onRemoveTodo={onRemoveTodo}
+          id={todo.id}
         />
       ))}
     </ul>
   );
 }
+
 
