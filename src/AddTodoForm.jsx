@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import {InputWithLabel} from './InputWithLabel'
 
 export function AddTodoForm({onAddTodo}){
     const [newTodo, setNewTodo] = useState('')
@@ -10,10 +11,6 @@ export function AddTodoForm({onAddTodo}){
     function handleAddTodo(e){
         //stops from refreshing 
         e.preventDefault()
-        // setTodos((currentTodos)=>{
-        //   return([...currentTodos, 
-        //     {id: crypto.randomUUID(), title: newTodo, completed: false}, ])
-        // })
         if(newTodo === ""){return }
         onAddTodo(newTodo)
         setNewTodo('')
@@ -22,13 +19,14 @@ export function AddTodoForm({onAddTodo}){
         <form onSubmit={handleAddTodo} className="new-item-form">
 <div className="form-row">
 <h1 className="header">Todo List App Generator</h1>
-  <label htmlFor="item">New Item</label>
+<InputWithLabel newTodo={newTodo} handleTitleChange={handleTitleChange}> Title </InputWithLabel>
+  {/* <label htmlFor="item">New Item</label>
   <input 
   value={newTodo} 
   onChange={handleTitleChange} 
   type="text" 
   id="item">
-  </input>
+  </input> */}
 </div>
 <button className="btn">Add</button>
 </form>
