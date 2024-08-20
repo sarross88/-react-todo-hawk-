@@ -21,12 +21,14 @@ function App() {
         resolve(objectTodo)
       }, 2000);
     }).then((result)=>{
+      //breakdown the result object 
       const retrievedTodoList = result.data.todoList;
       setTodoList(retrievedTodoList);
       setIsLoading(false);
     });
   }, []);
 
+  //if you use a state variable, must declare it in the returned array 
   useEffect(() => {
     if (!isLoading) {
       const todoListString = JSON.stringify(todoList);
