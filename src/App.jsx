@@ -9,24 +9,52 @@ function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
 
+  async function fetchData(){
+    const  id = import.meta.env.VITE_AIRTABLE_BASE_ID;
+    console.log(`id: ${id}`);
+    const  apiKey = import.meta.env.VITE_AIRTABLE_API_TOKEN;
+    console.log(`key: ${apiKey}`);
+    const  tableName = import.meta.env.VITE_TABLE_NAME;
+    console.log(`Table name: ${tableName}`);
+
+    const options = {
+        method: "GET",
+        headers: {
+          Authorization:`Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`
+        },
+    };
+    const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+
+    try{
+      const response = await fetch(url, options);
+
+        if(!response.ok){
+          throw new Error(`${response.status}`);
+        }
+        const data = await response.json();
+        console.log('your data', data);
+
+        const todos = data.records.map((item) => {
+            return{
+              id: item.id,
+              title: item.fields.Title,
+            };
+        });
+        console.log('air table todos',todos);
+        setTodoList(todos);
+        setIsLoading(false);
+    }
+    catch(error){
+      //this error is set by the above error 
+      console.log(error)}
+  }
+
+      //only runs once core value 
   useEffect(()=>{
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const existingTodos = JSON.parse(localStorage.getItem("savedTodoList")) ?? [];
-        const objectTodo = {
-          data: { 
-            todoList : existingTodos,
-          },
-        };
-        resolve(objectTodo)
-      }, 2000);
-    }).then((result)=>{
-      //breakdown the result object 
-      const retrievedTodoList = result.data.todoList;
-      setTodoList(retrievedTodoList);
-      setIsLoading(false);
-    });
+    fetchData();
   }, []);
+
+
 
   //if you use a state variable, must declare it in the returned array 
   useEffect(() => {
@@ -35,7 +63,6 @@ function App() {
       localStorage.setItem("savedTodoList", todoListString);
     }
   }, [todoList, isLoading]);
-
 
 
   function addTodo(newTodo) {
