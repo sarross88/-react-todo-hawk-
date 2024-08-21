@@ -3,20 +3,12 @@ import TodoList from "./TodoList.jsx";
 import  AddTodoForm from "./AddTodoForm.jsx";
 
 
-
 function App() {
 
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
 
   async function fetchData(){
-    const  id = import.meta.env.VITE_AIRTABLE_BASE_ID;
-    console.log(`id: ${id}`);
-    const  apiKey = import.meta.env.VITE_AIRTABLE_API_TOKEN;
-    console.log(`key: ${apiKey}`);
-    const  tableName = import.meta.env.VITE_TABLE_NAME;
-    console.log(`Table name: ${tableName}`);
-
     const options = {
         method: "GET",
         headers: {
@@ -24,16 +16,13 @@ function App() {
         },
     };
     const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
-
     try{
       const response = await fetch(url, options);
-
         if(!response.ok){
           throw new Error(`${response.status}`);
         }
         const data = await response.json();
         console.log('your data', data);
-
         const todos = data.records.map((item) => {
             return{
               id: item.id,
@@ -45,15 +34,15 @@ function App() {
         setIsLoading(false);
     }
     catch(error){
-      //this error is set by the above error 
-      console.log(error)}
+      console.log(error.message)
+      return null;
+    }
   }
 
       //only runs once core value 
   useEffect(()=>{
     fetchData();
   }, []);
-
 
 
   //if you use a state variable, must declare it in the returned array 
