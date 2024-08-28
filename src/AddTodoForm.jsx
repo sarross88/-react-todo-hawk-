@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { InputWithLabel } from "./InputWithLabel.jsx";
 
@@ -10,12 +11,7 @@ export default function AddTodoForm({ onAddTodo }) {
   }
   function handleAddTodo(event) {
     event.preventDefault();
-    const newTodo = {
-      title: todoTitle,
-      id: Date.now(),
-    };
-
-    onAddTodo(newTodo);
+    onAddTodo(todoTitle);
     setNewTodo("");
   }
 

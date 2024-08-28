@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import TodoList from "./TodoList.jsx";
 import  AddTodoForm from "./AddTodoForm.jsx";
-import {Routes, Route, Link} from 'react-router-dom';
+import {Routes, Route, Link, BrowserRouter, Switch} from 'react-router-dom';
 // import axios from 'axios';
 
 
@@ -11,17 +11,22 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
 
   //calls this addCat 
-  async function addData(todoTitle){
-    const newTodoData = {
-      title: todoTile
-    }
-
+  async function addTodo(newTodoTitle){
     const options = {
         method: "POST",
         headers: {
-          Authorization:`Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`
+          Authorization:`Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+          'Content-Type' : 'application/json',
         },
-        body: JSON.stringify(newTodoData)
+        body: JSON.stringify({
+          records: [
+            {
+              fields: {
+                title: newTodoTitle,
+              },
+            },
+          ],
+        }),
     };
     const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
     try{
@@ -29,8 +34,13 @@ function App() {
         if(!response.ok){
           throw new Error(`${response.status}`);
         }
-        const data = await response.json();
-        console.log('your data', data);
+       const data = await response.json();
+
+       const newTodo = {
+        title: data.records[0].fields.title,
+        id: data.records[0].id
+       }
+        setTodoList((prevTodoList)=>[newTodo, ...prevTodoList]);
     }
     catch(error){
       console.log(error.message)
@@ -39,7 +49,7 @@ function App() {
   }
 
 
-  async function fetchData(){
+  async function getData(){
     const options = {
         method: "GET",
         headers: {
@@ -72,22 +82,10 @@ function App() {
 
       //only runs once core value 
   useEffect(()=>{
-    fetchData();
+    getData();
   }, []);
 
 
-  //if you use a state variable, must declare it in the returned array 
-  useEffect(() => {
-    if (!isLoading) {
-      const todoListString = JSON.stringify(todoList);
-      localStorage.setItem("savedTodoList", todoListString);
-    }
-  }, [todoList, isLoading]);
-
-
-  function addTodo(newTodo) {
-    setTodoList((previousTodoList) => [...previousTodoList, newTodo]);
-  }
 
   function removeTodo(id) {
     const filteredTodoList = todoList.filter((todo) => todo.id !== id);
@@ -95,30 +93,35 @@ function App() {
   }
 
   return (
-    <>
+
+
+    <BrowserRouter>
+    <Routes>
     <nav>
       <div>logo</div>
       <div>
         <ul>
-          <li><Link to="/">home</Link></li>
-          <li><Link to="/new">home</Link></li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/new">New List</Link></li>
         </ul>
       </div>
     </nav>
-    <Routes>
+      <Switch>
     <Route path="/" element={
-         <div id='main'>
-         <section id='app-content'>
-         <h1>TODO APP</h1>
-         <AddTodoForm onAddTodo={addTodo} />
-         {isLoading ? (<p>Loading....</p>) 
-         : (<TodoList onRemoveTodo={removeTodo} todoList={todoList} />)}
-         </section>
-         </div>
-    }/>
-    <Route path='/new'><h1>New Todo List</h1></Route>
+           <div id='main'>
+           <section id='app-content'>
+           <h1>TODO APP</h1>
+           <AddTodoForm onAddTodo={addTodo} />
+           {isLoading ? (<p>Loading....</p>) 
+           : (<TodoList onRemoveTodo={removeTodo} todoList={todoList} />)}
+           </section>
+           </div>
+    }></Route>
+    <Route path='/new' element={<h1>New Todo List</h1>}></Route>
+    </Switch>
       </Routes>
-    </>
+      </BrowserRouter>
+  
   );
 }
 
