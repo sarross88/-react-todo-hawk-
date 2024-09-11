@@ -119,8 +119,8 @@ function App() {
        <div>logo</div>
        <div>
          <ul className={styles.styledNav} >
-           <li className='nav_link'><Link to="/">Home</Link></li>
-           <li className='nav_link'><Link to="/new">New List</Link></li>
+           <li className={styles.nav_link}><Link to="/">Home</Link></li>
+           <li className={styles.nav_link}><Link to="/new">New List</Link></li>
          </ul>
        </div>
      </nav>
