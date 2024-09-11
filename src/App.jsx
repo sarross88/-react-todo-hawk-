@@ -1,12 +1,81 @@
 import { useEffect, useState } from "react";
 import TodoList from "./TodoList.jsx";
 import  AddTodoForm from "./AddTodoForm.jsx";
+import {Routes, Route, BrowserRouter, Switch, Link} from 'react-router-dom';
+import styles from "./App.css";
+// import axios from 'axios';
 
+const BASE_URL =`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 
 function App() {
 
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
+
+  //calls this addCat 
+  async function removeTodo(todoId){
+    const options = {
+      method: 'DELETE',
+      headers: {
+        Authorization:`Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+        'Content-Type' : 'application/json',
+      }
+    }
+  const url = `${BASE_URL}/${todoId}`;
+  try{
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error(`${response.status}`);
+    }
+    const data = await response.json();
+    if (!data.deleted) {
+      throw new Error("Todo is not there to be deleted");
+    }
+    setTodoList((previousTodoList)=>{
+      previousTodoList.filter((todo)=> todo.id !== data.id)
+    })
+  }catch(error){
+    console.log(error.message);
+    return null;
+  }
+  }
+
+  async function addTodo(newTodoTitle){
+    const options = {
+        method: "POST",
+        headers: {
+          Authorization:`Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+          'Content-Type' : 'application/json',
+        },
+        body: JSON.stringify({
+          records: [
+            {
+              fields: {
+                title: newTodoTitle,
+              },
+            },
+          ],
+        }),
+    };
+    try{
+      const response = await fetch(BASE_URL, options);
+
+        if(!response.ok){
+          throw new Error(`${response.status}`);
+        }
+       const data = await response.json();
+
+       const newTodo = {
+        title: data.records[0].fields.title,
+        id: data.records[0].id
+       }
+        setTodoList((prevTodoList)=>[newTodo, ...prevTodoList]);
+    }catch(error){
+      console.log(error.message)
+      return null;
+    }
+  }
+
 
   async function fetchData(){
     const options = {
@@ -15,21 +84,20 @@ function App() {
           Authorization:`Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`
         },
     };
-    const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
     try{
-      const response = await fetch(url, options);
+      const response = await fetch(BASE_URL, options);
+
         if(!response.ok){
           throw new Error(`${response.status}`);
         }
+
         const data = await response.json();
-        console.log('your data', data);
-        const todos = data.records.map((item) => {
+
+        const todos = data.records.map((todo) => {
             return{
-              id: item.id,
-              title: item.fields.Title,
-            };
+              id: todo.id,
+              title: todo.fields.title};
         });
-        console.log('air table todos',todos);
         setTodoList(todos);
         setIsLoading(false);
     }
@@ -44,37 +112,70 @@ function App() {
     fetchData();
   }, []);
 
-
-  //if you use a state variable, must declare it in the returned array 
-  useEffect(() => {
-    if (!isLoading) {
-      const todoListString = JSON.stringify(todoList);
-      localStorage.setItem("savedTodoList", todoListString);
-    }
-  }, [todoList, isLoading]);
-
-
-  function addTodo(newTodo) {
-    setTodoList((previousTodoList) => [...previousTodoList, newTodo]);
-  }
-
-  function removeTodo(id) {
-    const filteredTodoList = todoList.filter((todo) => todo.id !== id);
-    setTodoList(filteredTodoList);
-  }
-
   return (
-    <>
-      <div id='main'>
-      <section id='app-content'>
-      <h1>TODO APP</h1>
-      <AddTodoForm onAddTodo={addTodo} />
-      {isLoading ? (<p>Loading....</p>) 
-      : (<TodoList onRemoveTodo={removeTodo} todoList={todoList} />)}
-      </section>
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+      <nav >
+       <div>logo</div>
+       <div>
+         <ul className={styles.styledNav} >
+           <li className={styles.nav_link}><Link to="/">Home</Link></li>
+           <li className={styles.nav_link}><Link to="/new">New List</Link></li>
+         </ul>
+       </div>
+     </nav>
+      <Switch>
+        <Route
+          path="/"
+          element={
+            <body className={styles.bodyBackground}>
+            <main>
+              <h1 className={styles.playwrite-br-cursive}>Todos</h1>
+              <AddTodoForm onAddTodo={addTodo} />
+              {isLoading ? (
+                <p>Loading...</p>
+              ) : (
+                <TodoList onRemoveTodo={removeTodo} todoList={todoList} />
+              )}
+            </main>
+            </body>
+          }
+        />
+        <Route path="/new" element={<h1>New Todo List</h1>} />
+        </Switch>
+      </Routes>
+    </BrowserRouter>
   );
+
+  // return (
+  //   <BrowserRouter>
+  //   <Routes>
+  //   <nav>
+  //     <div>logo</div>
+  //     <div>
+  //       <ul>
+  //         <li><Link to="/">Home</Link></li>
+  //         <li><Link to="/new">New List</Link></li>
+  //       </ul>
+  //     </div>
+  //   </nav>
+  //     <Switch>
+  //   <Route path="/" element={
+  //          <div id='main'>
+  //          <section id='app-content'>
+  //          <h1>TODO APP</h1>
+  //          <AddTodoForm onAddTodo={addTodo} />
+  //          {isLoading ? (<p>Loading....</p>) 
+  //          : (<TodoList onRemoveTodo={removeTodo} todoList={todoList} />)}
+  //          </section>
+  //          </div>
+  //   }></Route>
+  //   <Route path='/new' element={<h1>New Todo List</h1>}></Route>
+  //   </Switch>
+  //     </Routes>
+  //     </BrowserRouter>
+  
+  // );
 }
 
 export default App;
