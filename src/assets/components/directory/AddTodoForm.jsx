@@ -1,27 +1,31 @@
+
 import { useState } from "react";
+import PropTypes from 'prop-types'
 import { InputWithLabel } from "./InputWithLabel.jsx";
 
+AddTodoForm.propTypes = {
+  onAddTodo: PropTypes.func,
+}
+
 export default function AddTodoForm({ onAddTodo }) {
-  const [todoTitle, setNewTodo] = useState("");
+  
+  const [todoTitle, setTodoTitle] = useState("");
 
   function handleTitleChange(event) {
     const newTodoTitle = event.target.value;
-    setNewTodo(newTodoTitle);
+    setTodoTitle(newTodoTitle);
   }
   function handleAddTodo(event) {
     event.preventDefault();
-    const newTodo = {
-      title: todoTitle,
-      id: Date.now(),
-    };
-
-    onAddTodo(newTodo);
-    setNewTodo("");
+    onAddTodo(todoTitle);
+    setTodoTitle("");
   }
 
   return (
     <form onSubmit={handleAddTodo}>
-      <InputWithLabel todoTitle={todoTitle} handleTitleChange={handleTitleChange}>
+      <InputWithLabel 
+      todoTitle={todoTitle} 
+      handleTitleChange={handleTitleChange}>
         ADD NEW TODO :
       </InputWithLabel>
 
