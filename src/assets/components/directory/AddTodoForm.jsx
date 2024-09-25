@@ -1,8 +1,14 @@
-/* eslint-disable react/prop-types */
+
 import { useState } from "react";
+import PropTypes from 'prop-types'
 import { InputWithLabel } from "./InputWithLabel.jsx";
 
+AddTodoForm.propTypes = {
+  onAddTodo: PropTypes.func,
+}
+
 export default function AddTodoForm({ onAddTodo }) {
+  
   const [todoTitle, setTodoTitle] = useState("");
 
   function handleTitleChange(event) {

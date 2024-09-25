@@ -1,6 +1,12 @@
 import TodoListItem from "./TodoListItem";
+import PropTypes from 'prop-types'
 
-export default function todoList({ todoList, onRemoveTodo }) {
+TodoList.propTypes = {
+  todoList: PropTypes.array,
+  onRemoveTodo: PropTypes.func, 
+}
+
+export default function TodoList({ todoList, onRemoveTodo }) {
   return (
     <ul>
       {todoList.map((todo) => (
