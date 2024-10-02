@@ -1,28 +1,26 @@
-import {useEffect, useRef} from 'react';
+import { useEffect, useRef } from "react";
 
-export default function InputWithLabel (props) {
-    //useRef will store dom Elements in state 
-    //useRef won't cause re-enders 
-    const inputRef = useRef();
+export function InputWithLabel(props) {
+  // useRef can be used to store DOM elements in state
+  // Unlike variables from useState, ref's don't cause re-renders
+  const inputRef = useRef();
 
-    //this is the actual 
-    console.log(inputRef.current);
+  console.log(inputRef.current);
 
-    //worded wierd question 
-    useEffect(()=>{
-        inputRef.current.focus()
-    });
+  useEffect(() => {
+    inputRef.current.focus();
+  });
 
-    return (
-        <>
-<label htmlFor="item">{props.children}</label>
-  <input 
-  value={props.newTodo} 
-  onChange={props.handleTitleChange} 
-  type="text" 
-  id="item"
-  ref={inputRef}
-  /> 
-        </>
-    );
+  return (
+    <>
+      <label htmlFor="todo">{props.children}</label>
+      <input
+        value={props.todoTitle}
+        onChange={props.handleTitleChange}
+        name="type"
+        id="todo"
+        ref={inputRef}
+      />
+    </>
+  );
 }
