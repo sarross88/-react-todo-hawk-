@@ -2,13 +2,17 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import TodoList from "./TodoList.jsx";
 import AddTodoForm from "./AddTodoForm.jsx";
-import ToggleSwitch from "./ToggleSwitch.jsx";
+// import ToggleSwitch from "./ToggleSwitch.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+("https://api.airtable.com/v0/{baseId}/{tableIdOrName}/{recordId}");
 const BASE_URL = `https://api.airtable.com/v0/${
   import.meta.env.VITE_AIRTABLE_BASE_ID
 }/${import.meta.env.VITE_TABLE_NAME}`;
+console.log("base url" + BASE_URL);
+
 const TOKEN = import.meta.env.VITE_AIRTABLE_API_TOKEN;
+console.log(TOKEN);
 
 function App() {
   const [todoList, setTodoList] = useState([]);
@@ -98,14 +102,19 @@ function App() {
     };
 
     try {
-      // const url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`
-      const query1 = "?view=Grid%20view&sort[0][field]=Title";
-      const query2 = "&sort[0][field]=title";
-      const query3 = "&sort[0][direction]=asc";
-      const urlSpecial = `https://api.airtable.com/v0/${
+      const url = `https://api.airtable.com/v0/${
         import.meta.env.VITE_AIRTABLE_BASE_ID
-      }/${import.meta.env.VITE_TABLE_NAME}${query1 + query2 + query3}`;
-      const response = await fetch(urlSpecial, options);
+      }/${import.meta.env.VITE_TABLE_NAME}`;
+      // const query1 = "?view=Grid%20view&sort[0][field]=title";
+      // const query2 = "&sort[0][field]=title";
+      // const query3 = "&sort[0][direction]=asc";
+      // const urlSpecial = `https://api.airtable.com/v0/${
+      //   import.meta.env.VITE_AIRTABLE_BASE_ID
+      // }/${import.meta.env.VITE_TABLE_NAME}
+      // ${query1 + query2 + query3}`;
+
+      // const urlSpecial = `https://api.airtable.com/v0/app7lmaUmZE2fzohz/Default?fields%5B%5D=title&sort%5B0%5D%5Bfield%5D=&sort%5B0%5D%5Bdirection%5D=asc`;
+      const response = await fetch(url, options);
 
       if (!response.ok) {
         throw new Error(`${response.status}`);
@@ -143,7 +152,7 @@ function App() {
                 <p>Loading...</p>
               ) : (
                 <>
-                  <ToggleSwitch />
+                  {/* <ToggleSwitch /> */}
                   <TodoList onRemoveTodo={removeTodo} todoList={todoList} />
                 </>
               )}

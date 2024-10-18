@@ -8,10 +8,10 @@
 :root {
   font-size: 24px;
   /* CSS Variables */
-  --bg-color-1: white;
-  --bg-color-2: #faedcd;
-  --text-color: black;
-  --bg-primary: #606c38;
+  --dark-font: #22223b;
+  --med-dark-font: #4a4e69;
+  --btn-color: #9a8c98;
+  --tan-color: #f2e9e4;
   --margin-bottom: 1rem;
   --border-radius: 0.5rem;
   --header-font: "Quattrocento", system-ui;
@@ -22,14 +22,16 @@
 
 body {
   background-color: var(--bg-color-1);
-  color: var(--text-color);
+  color: #22223b;
 }
 
 main {
   margin: auto;
   margin-top: 6rem;
   max-width: 30rem;
-  background-color: #fefae0;
+  background-color: var(--tan-color);
+  color: #22223b;
+  border-radius: var(--border-radius);
 }
 
 .mulish {
@@ -55,19 +57,20 @@ h1 {
   text-align: center;
   margin-bottom: var(--margin-bottom);
   font-weight: 800;
-  color: #606c38;
+  color: #22223b;
   font-family: var(--header-font);
   font-weight: var(--header-fontWeight-bold);
 }
 
 form {
-  background-color: var(--bg-color-2);
+  background-color: var(--btn-color);
   margin-bottom: var(--margin-bottom);
   border-radius: var(--border-radius);
   font-family: var(--seondary-font);
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
 }
 
 form > input,
@@ -89,13 +92,13 @@ form > input {
 form > button {
   cursor: pointer;
   color: white;
-  background-color: var(--bg-primary);
+  background-color: #4a4e69;
 }
 ul {
   list-style-type: none;
   font-family: var(--seondary-font);
   font-weight: 350;
-  background-color: var(--bg-color-2);
+  background-color: #f2e9e4;
 }
 
 li {
@@ -106,12 +109,15 @@ li {
   align-items: center;
   justify-content: space-between;
   padding: 0.2rem;
+  background-color: #9a8c98;
 }
 li > button {
   cursor: pointer;
-  background-color: var(--bg-primary);
+  background-color: #4a4e69;
   font-size: 0.7rem;
-  padding: 0.1rem;
+  padding: 0.2rem;
+  color: white;
+  border-radius: var(--border-radius);
 }
 
 /* Toggle Stuff */
