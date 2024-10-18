@@ -1,4 +1,3 @@
-
 /* Doc reset box-sizing has the border included*/
 * {
   margin: 0;
@@ -6,33 +5,32 @@
   box-sizing: border-box;
 }
 
-:root{
+:root {
   font-size: 24px;
   /* CSS Variables */
   --bg-color-1: white;
-  --bg-color-2: rgb(204, 200, 200);
+  --bg-color-2: #faedcd;
   --text-color: black;
-  --bg-primary: rgb(161, 177, 177);
+  --bg-primary: #606c38;
   --margin-bottom: 1rem;
-  --border-radius: .5rem;
-  --header-font: "Quattrocento", system-ui; 
+  --border-radius: 0.5rem;
+  --header-font: "Quattrocento", system-ui;
   --seondary-font: "Mulish", sans-serif;
   --header-fontWeight-bold: 700;
   --header-fontWeight-semi-bold: 400;
 }
 
-body{
- background-color: var(--bg-color-1);
- color: var(--text-color)
+body {
+  background-color: var(--bg-color-1);
+  color: var(--text-color);
 }
 
-main{
+main {
   margin: auto;
   margin-top: 6rem;
-  max-width:30rem;
-  background-color: red;
+  max-width: 30rem;
+  background-color: #fefae0;
 }
-
 
 .mulish {
   font-family: "Mulish", sans-serif;
@@ -53,75 +51,80 @@ main{
   font-style: normal;
 }
 
-h1{
+h1 {
   text-align: center;
   margin-bottom: var(--margin-bottom);
   font-weight: 800;
-  color: rgb(65, 64, 64);
+  color: #606c38;
   font-family: var(--header-font);
   font-weight: var(--header-fontWeight-bold);
 }
 
-form{
+form {
   background-color: var(--bg-color-2);
   margin-bottom: var(--margin-bottom);
   border-radius: var(--border-radius);
   font-family: var(--seondary-font);
- display: flex;
- flex-direction: column;
- align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-form > input, form > label, form > button{
-  margin-bottom: .5rem
+form > input,
+form > label,
+form > button {
+  margin-bottom: 0.5rem;
 }
 
-form>button, form>input{
+form > button,
+form > input {
   min-height: 1.5rem;
   min-width: 10rem;
   border: 1px soild rgb(204, 200, 200);
   border-radius: var(--border-radius);
-  font-size: .8rem;
-  padding: .4;
+  font-size: 0.8rem;
+  padding: 0.4;
+  color: var(--bg-primary);
 }
-form>button{
+form > button {
   cursor: pointer;
+  color: white;
   background-color: var(--bg-primary);
 }
-ul{
+ul {
   list-style-type: none;
   font-family: var(--seondary-font);
   font-weight: 350;
   background-color: var(--bg-color-2);
 }
 
-li{
+li {
   margin-bottom: var(--margin-bottom);
   border-radius: var(--border-radius);
   background-color: beige;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .2rem;
+  padding: 0.2rem;
 }
-li > button{
+li > button {
   cursor: pointer;
   background-color: var(--bg-primary);
-  font-size: .7rem;
-  padding: .1rem;
+  font-size: 0.7rem;
+  padding: 0.1rem;
 }
 
 /* Toggle Stuff */
-.toggle-container{
- display: flex;
- align-items: center;
- justify-content: center;
- font-family: var(--header-font);
- font-weight: 300;
+.toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--header-font);
+  font-weight: 300;
 }
-.toggle-container>h3{
-  margin-right: .2rem;
-  font-size: .7rem;
+.toggle-container > h3 {
+  margin-right: 0.2rem;
+  font-size: 0.7rem;
 }
 .toggle-switch {
   position: relative;
